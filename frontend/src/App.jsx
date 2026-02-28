@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
+import ProductList from './pages/ProductList';
 
 // Placeholder Pages (we will build these soon)
-const ProductList = () => <div className="p-8 text-center mt-20">Product List Page</div>;
 const Login = () => <div className="p-8 text-center mt-20">Login Page</div>;
 const AdminDashboard = () => <div className="p-8 text-center mt-20">Admin Dashboard</div>;
 
