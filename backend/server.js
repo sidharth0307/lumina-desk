@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 
+import authRoutes from './routes/authRoutes.js';
+
 dotenv.config();
 
 const app = express();
@@ -24,6 +26,9 @@ app.use('/api/', apiLimiter);
 
 // Middleware
 app.use(express.json()); // Parse JSON bodies
+
+// Routes
+app.use('/api/auth', authRoutes);
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)
