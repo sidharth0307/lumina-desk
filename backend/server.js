@@ -5,6 +5,7 @@ import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 
 import authRoutes from './routes/authRoutes.js';
+import productRoutes from './routes/productRoutes.js';
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use(express.json()); // Parse JSON bodies
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)
