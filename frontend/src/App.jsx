@@ -4,9 +4,8 @@ import Home from './pages/Home';
 import ProductList from './pages/ProductList';
 import Login from './pages/Login';       
 import Register from './pages/Register';
-
-// Placeholder Pages (we will build these soon)
-const AdminDashboard = () => <div className="p-8 text-center mt-20">Admin Dashboard</div>;
+import AdminDashboard from './pages/AdminDashboard'; // Import Dashboard
+import AdminRoute from './components/AdminRoute';
 
 function App() {
   return (
@@ -19,6 +18,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<AdminDashboard />} />
+
+          {/* Protected Admin Routes */}
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<AdminDashboard />} />
+          </Route>
         </Routes>
       </main>
     </Router>
