@@ -85,3 +85,15 @@ export const getOrders = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// @desc    Get logged in user orders
+// @route   GET /api/orders/myorders
+// @access  Private
+export const getMyOrders = async (req, res) => {
+    try {
+        const orders = await Order.find({ user: req.user._id }).sort({ createdAt: -1 }).populate('products.product', 'title imageUrl');
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

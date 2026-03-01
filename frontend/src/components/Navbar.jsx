@@ -32,24 +32,27 @@ const Navbar = () => {
 
                     {/* Right Side Icons/Actions */}
                     <div className="flex items-center space-x-6">
-                        {user ? (
-                            <>
-                                {user.role === 'admin' ? (
-                                    <Link to="/admin" className="flex items-center gap-1 hover:text-primary transition-colors">
-                                        <LayoutDashboard size={20} />
-                                        <span className="hidden sm:inline text-sm">Dashboard</span>
-                                    </Link>
-                                ) : (
-                                    <Link to="/cart" className="flex items-center gap-1 hover:text-primary transition-colors">
-                                        <ShoppingBag size={20} />
-                                        <span className="hidden sm:inline text-sm">Cart</span>
-                                    </Link>
-                                )}
-                                <button onClick={handleLogout} className="flex items-center gap-1 hover:text-red-400 transition-colors">
-                                    <LogOut size={20} />
-                                </button>
-                            </>
-                        ) : (
+                       {user ? (
+                                <>
+                                    {user.role === 'admin' ? (
+                                        <Link to="/admin" className="flex items-center gap-1 hover:text-primary transition-colors">
+                                            <LayoutDashboard size={20} />
+                                            <span className="hidden sm:inline text-sm">Dashboard</span>
+                                        </Link>
+                                    ) : (
+                                        <>
+                                            <Link to="/orders" className="text-sm hover:text-primary transition-colors hidden sm:block">My Orders</Link>
+                                            <Link to="/cart" className="flex items-center gap-1 hover:text-primary transition-colors">
+                                                <ShoppingBag size={20} />
+                                                <span className="hidden sm:inline text-sm">Cart</span>
+                                            </Link>
+                                        </>
+                                    )}
+                                    <button onClick={handleLogout} className="flex items-center gap-1 hover:text-red-400 transition-colors">
+                                        <LogOut size={20} />
+                                    </button>
+                                </>
+                            ) : (
                             <Link to="/login" className="flex items-center gap-1 hover:text-primary transition-colors">
                                 <User size={20} />
                                 <span className="hidden sm:inline text-sm">Sign In</span>
