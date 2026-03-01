@@ -17,9 +17,22 @@ dotenv.config();
 const app = express();
 
 // Security: CORS Configuration
+const allowedOrigins = [
+    process.env.CLIENT_URL,                    
+    'https://lumina-desk.vercel.app',               
+];
+
 app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('CORS Policy: Access Denied'));
+        }
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 // Security: Rate Limiting
