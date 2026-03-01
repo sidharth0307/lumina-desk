@@ -21,11 +21,15 @@ const ProductCard = ({ product }) => {
                         alt={product.title} 
                         className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
                     />
-                    {product.stockQuantity === 0 && (
+                    {product.stockQuantity === 0 ? (
                         <div className="absolute top-2 right-2 bg-red-900/80 text-white text-xs px-2 py-1 rounded-sm border border-red-500 backdrop-blur-sm">
                             Sold Out
                         </div>
-                    )}
+                    ) : product.stockQuantity <= 5 ? (
+                        <div className="absolute top-2 right-2 bg-yellow-900/80 text-yellow-200 text-xs px-2 py-1 rounded-sm border border-yellow-500 backdrop-blur-sm">
+                            Only {product.stockQuantity} Left
+                        </div>
+                    ) : null}
                 </div>
                 <div className="p-5 flex-1 flex flex-col justify-between">
                     <div>

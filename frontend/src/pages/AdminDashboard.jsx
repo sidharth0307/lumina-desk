@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { Plus, Edit, Trash2, DollarSign } from 'lucide-react';
+import { Plus, Edit, Trash2, DollarSign, Package } from 'lucide-react';
 
 const AdminDashboard = () => {
     const [products, setProducts] = useState([]);
     const [revenue, setRevenue] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [totalSales, setTotalSales] = useState(0);
 
     // Form State for Adding/Editing Products
     const [isEditing, setIsEditing] = useState(false);
@@ -34,6 +35,7 @@ const AdminDashboard = () => {
             // Fetch total revenue from orders API
             const orderRes = await api.get('/orders');
             setRevenue(orderRes.data.totalRevenue);
+            setTotalSales(orderRes.data.orders.length);
             
             setLoading(false);
         } catch (err) {
@@ -105,6 +107,19 @@ const AdminDashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-4xl font-serif font-bold text-textMain">Admin Dashboard</h1>
+
+                <div className="flex gap-4">
+                {/* NEW: Total Sales Card */}
+                <div className="bg-surface border border-surface/50 p-4 rounded-sm flex items-center gap-3">
+                    <div className="bg-blue-900/30 p-2 rounded-sm text-blue-500">
+                        <Package size={24} /> {/* Make sure to import Package from 'lucide-react' */}
+                    </div>
+                    <div>
+                        <p className="text-xs text-textMuted uppercase tracking-wider">Total Sales</p>
+                        <p className="text-2xl font-bold text-textMain">{totalSales}</p>
+                    </div>
+                </div>
+                </div>
                 
                 {/* Revenue Card */}
                 <div className="bg-surface border border-surface/50 p-4 rounded-sm flex items-center gap-3">
