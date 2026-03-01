@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    // We will change this to your live Render URL during deployment
-    baseURL: 'http://localhost:5000/api', 
+    baseURL: import.meta.env.VITE_API_URL, 
 });
 
 // Interceptor: Automatically attach the JWT token to requests if the user is logged in

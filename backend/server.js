@@ -18,7 +18,7 @@ const app = express();
 
 // Security: CORS Configuration
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173', // Vite's default port
+    origin: process.env.CLIENT_URL,
     credentials: true,
 }));
 
@@ -45,7 +45,7 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    // ASSIGNMENT REQUIREMENT: Stock reduction after successful payment
+    // Stock reduction after successful payment
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
         const orderItems = JSON.parse(session.metadata.orderItems);
@@ -74,8 +74,6 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
 });
 // --- END WEBHOOK ---
 
-// Make sure app.use(express.json()); is right here!
-
 // Middleware
 app.use(express.json()); // Parse JSON bodies
 
@@ -89,7 +87,7 @@ mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB Connected successfully'))
     .catch((err) => console.log('MongoDB connection error:', err));
 
-// Basic Route for testing
+
 app.get('/', (req, res) => {
     res.send('Lumina Desk API is running');
 });
