@@ -100,139 +100,165 @@ const AdminDashboard = () => {
         setCurrentProductId(null);
     };
 
-    if (loading) return <div className="p-8 text-center mt-20 text-textMuted">Loading Dashboard...</div>;
-    if (error) return <div className="p-8 text-center mt-20 text-red-500">{error}</div>;
+   if (loading) return (
+        <div className="flex justify-center items-center min-h-[calc(100vh-5rem)]">
+            <div className="relative w-16 h-16">
+                <div className="absolute inset-0 rounded-full border-t-2 border-primary animate-spin"></div>
+                <div className="absolute inset-2 rounded-full border-r-2 border-textMuted animate-spin animation-delay-200"></div>
+            </div>
+        </div>
+    );
+    if (error) return <div className="p-8 text-center mt-20 text-red-400 bg-red-950/20 border border-red-900/50 rounded-2xl max-w-2xl mx-auto animate-fade-in">{error}</div>;
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-4xl font-serif font-bold text-textMain">Admin Dashboard</h1>
-
-                <div className="flex gap-4">
-                {/* NEW: Total Sales Card */}
-                <div className="bg-surface border border-surface/50 p-4 rounded-sm flex items-center gap-3">
-                    <div className="bg-blue-900/30 p-2 rounded-sm text-blue-500">
-                        <Package size={24} /> {/* Make sure to import Package from 'lucide-react' */}
-                    </div>
-                    <div>
-                        <p className="text-xs text-textMuted uppercase tracking-wider">Total Sales</p>
-                        <p className="text-2xl font-bold text-textMain">{totalSales}</p>
-                    </div>
-                </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 animate-fade-in">
+            
+            {/* Header & Stat Cards */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6 animate-fade-in-up">
+                <div>
+                    <h1 className="text-4xl font-heading font-bold text-textMain tracking-tight">Admin Dashboard</h1>
+                    <p className="text-textMuted mt-2 font-light">Manage your products and monitor store performance.</p>
                 </div>
                 
-                {/* Revenue Card */}
-                <div className="bg-surface border border-surface/50 p-4 rounded-sm flex items-center gap-3">
-                    <div className="bg-green-900/30 p-2 rounded-sm text-green-500">
-                        <DollarSign size={24} />
+                <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+                    {/* Total Sales Card */}
+                    <div className="bg-surface/40 backdrop-blur-md border border-border-subtle p-5 rounded-3xl flex items-center gap-5 shadow-xl shadow-black/20 w-full sm:w-auto">
+                        <div className="bg-blue-500/10 p-3 rounded-2xl text-blue-400 border border-blue-500/20">
+                            <Package size={28} />
+                        </div>
+                        <div>
+                            <p className="text-xs text-textMuted uppercase tracking-widest font-medium mb-1">Total Sales</p>
+                            <p className="text-3xl font-heading font-bold text-textMain">{totalSales}</p>
+                        </div>
                     </div>
-                    <div>
-                        <p className="text-xs text-textMuted uppercase tracking-wider">Total Revenue</p>
-                        <p className="text-2xl font-bold text-textMain">${revenue.toFixed(2)}</p>
+
+                    {/* Revenue Card */}
+                    <div className="bg-surface/40 backdrop-blur-md border border-border-subtle p-5 rounded-3xl flex items-center gap-5 shadow-xl shadow-black/20 w-full sm:w-auto">
+                        <div className="bg-green-500/10 p-3 rounded-2xl text-green-400 border border-green-500/20">
+                            <DollarSign size={28} />
+                        </div>
+                        <div>
+                            <p className="text-xs text-textMuted uppercase tracking-widest font-medium mb-1">Total Revenue</p>
+                            <p className="text-3xl font-heading font-bold text-textMain">${revenue.toFixed(2)}</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12">
                 
                 {/* Product Form (Left Side) */}
-                <div className="lg:col-span-1 bg-surface p-6 rounded-sm border border-surface/50 h-fit sticky top-24">
-                    <h2 className="text-xl font-serif font-bold text-textMain mb-6 flex items-center gap-2">
-                        {isEditing ? <Edit size={20} className="text-primary"/> : <Plus size={20} className="text-primary"/>}
-                        {isEditing ? 'Edit Product' : 'Add New Product'}
-                    </h2>
-
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                            <label className="block text-xs font-medium text-textMuted mb-1">Title</label>
-                            <input type="text" name="title" value={formData.title} onChange={handleInputChange} required className="w-full bg-background border border-surface text-textMain rounded-sm px-3 py-2 text-sm focus:border-primary" />
-                        </div>
-                        
-                        <div>
-                            <label className="block text-xs font-medium text-textMuted mb-1">Category</label>
-                            <select name="category" value={formData.category} onChange={handleInputChange} required className="w-full bg-background border border-surface text-textMain rounded-sm px-3 py-2 text-sm focus:border-primary">
-                                <option value="Desk Mats">Desk Mats</option>
-                                <option value="Stands">Stands</option>
-                                <option value="Lighting">Lighting</option>
-                                <option value="Keyboards">Keyboards</option>
-                            </select>
-                        </div>
-
-                        <div className="flex gap-4">
-                            <div className="w-1/2">
-                                <label className="block text-xs font-medium text-textMuted mb-1">Price ($)</label>
-                                <input type="number" name="price" value={formData.price} onChange={handleInputChange} required min="0" step="0.01" className="w-full bg-background border border-surface text-textMain rounded-sm px-3 py-2 text-sm focus:border-primary" />
+                <div className="lg:col-span-1 animate-fade-in-up delay-100">
+                    <div className="bg-surface/40 backdrop-blur-md p-8 rounded-3xl border border-border-subtle shadow-xl shadow-black/20 sticky top-28">
+                        <h2 className="text-2xl font-heading font-medium text-textMain mb-6 flex items-center gap-3">
+                            <div className="bg-primary/10 p-2 rounded-full text-primary">
+                                {isEditing ? <Edit size={20} /> : <Plus size={20} />}
                             </div>
-                            <div className="w-1/2">
-                                <label className="block text-xs font-medium text-textMuted mb-1">Stock Qty</label>
-                                <input type="number" name="stockQuantity" value={formData.stockQuantity} onChange={handleInputChange} required min="0" className="w-full bg-background border border-surface text-textMain rounded-sm px-3 py-2 text-sm focus:border-primary" />
+                            {isEditing ? 'Edit Product' : 'Add Product'}
+                        </h2>
+
+                        <form onSubmit={handleSubmit} className="space-y-5">
+                            <div>
+                                <label className="block text-xs font-medium text-textMuted mb-2 uppercase tracking-wider pl-1">Title</label>
+                                <input type="text" name="title" value={formData.title} onChange={handleInputChange} required className="w-full bg-background border border-border-subtle text-textMain rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300" />
                             </div>
-                        </div>
+                            
+                            <div>
+                                <label className="block text-xs font-medium text-textMuted mb-2 uppercase tracking-wider pl-1">Category</label>
+                                <select name="category" value={formData.category} onChange={handleInputChange} required className="w-full bg-background border border-border-subtle text-textMain rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-all duration-300">
+                                    <option value="Desk Mats">Desk Mats</option>
+                                    <option value="Stands">Stands</option>
+                                    <option value="Lighting">Lighting</option>
+                                    <option value="Keyboards">Keyboards</option>
+                                </select>
+                            </div>
 
-                        <div>
-                            <label className="block text-xs font-medium text-textMuted mb-1">Image URL (e.g., Unsplash)</label>
-                            <input type="url" name="imageUrl" value={formData.imageUrl} onChange={handleInputChange} required className="w-full bg-background border border-surface text-textMain rounded-sm px-3 py-2 text-sm focus:border-primary" placeholder="https://..." />
-                        </div>
+                            <div className="flex gap-4">
+                                <div className="w-1/2">
+                                    <label className="block text-xs font-medium text-textMuted mb-2 uppercase tracking-wider pl-1">Price ($)</label>
+                                    <input type="number" name="price" value={formData.price} onChange={handleInputChange} required min="0" step="0.01" className="w-full bg-background border border-border-subtle text-textMain rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300" />
+                                </div>
+                                <div className="w-1/2">
+                                    <label className="block text-xs font-medium text-textMuted mb-2 uppercase tracking-wider pl-1">Stock Qty</label>
+                                    <input type="number" name="stockQuantity" value={formData.stockQuantity} onChange={handleInputChange} required min="0" className="w-full bg-background border border-border-subtle text-textMain rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300" />
+                                </div>
+                            </div>
 
-                        <div>
-                            <label className="block text-xs font-medium text-textMuted mb-1">Description</label>
-                            <textarea name="description" value={formData.description} onChange={handleInputChange} required rows="3" className="w-full bg-background border border-surface text-textMain rounded-sm px-3 py-2 text-sm focus:border-primary"></textarea>
-                        </div>
+                            <div>
+                                <label className="block text-xs font-medium text-textMuted mb-2 uppercase tracking-wider pl-1">Image URL</label>
+                                <input type="url" name="imageUrl" value={formData.imageUrl} onChange={handleInputChange} required placeholder="https://..." className="w-full bg-background border border-border-subtle text-textMain rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300" />
+                            </div>
 
-                        <div className="flex gap-2 pt-2">
-                            <button type="submit" className="flex-1 bg-primary text-background py-2 rounded-sm text-sm font-medium hover:bg-yellow-500 transition-colors">
-                                {isEditing ? 'Update Product' : 'Add Product'}
-                            </button>
-                            {isEditing && (
-                                <button type="button" onClick={cancelEdit} className="flex-1 bg-surface border border-surface text-textMain py-2 rounded-sm text-sm font-medium hover:bg-surface/80 transition-colors">
-                                    Cancel
+                            <div>
+                                <label className="block text-xs font-medium text-textMuted mb-2 uppercase tracking-wider pl-1">Description</label>
+                                <textarea name="description" value={formData.description} onChange={handleInputChange} required rows="3" className="w-full bg-background border border-border-subtle text-textMain rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 resize-none"></textarea>
+                            </div>
+
+                            <div className="flex gap-3 pt-3">
+                                <button type="submit" className="flex-1 bg-primary text-background py-3.5 rounded-full text-sm font-bold transition-all duration-300 hover:scale-[1.02] hover:bg-textMain hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]">
+                                    {isEditing ? 'Save Changes' : 'Create Product'}
                                 </button>
-                            )}
-                        </div>
-                    </form>
+                                {isEditing && (
+                                    <button type="button" onClick={cancelEdit} className="flex-1 bg-transparent border border-border-subtle text-textMain py-3.5 rounded-full text-sm font-bold transition-all duration-300 hover:bg-surface hover:border-textMuted">
+                                        Cancel
+                                    </button>
+                                )}
+                            </div>
+                        </form>
+                    </div>
                 </div>
 
                 {/* Product List (Right Side) */}
-                <div className="lg:col-span-2">
-                    <div className="bg-surface rounded-sm border border-surface/50 overflow-hidden">
+                <div className="lg:col-span-2 animate-fade-in-up delay-200">
+                    <div className="bg-surface/30 border border-border-subtle rounded-3xl overflow-hidden shadow-xl shadow-black/20">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="border-b border-surface/50 bg-background/50">
-                                    <th className="p-4 text-xs font-medium text-textMuted uppercase tracking-wider">Product</th>
-                                    <th className="p-4 text-xs font-medium text-textMuted uppercase tracking-wider">Price</th>
-                                    <th className="p-4 text-xs font-medium text-textMuted uppercase tracking-wider">Stock</th>
-                                    <th className="p-4 text-xs font-medium text-textMuted uppercase tracking-wider text-right">Actions</th>
+                                <tr className="border-b border-border-subtle bg-background/50">
+                                    <th className="p-5 text-xs font-medium text-textMuted uppercase tracking-[0.2em]">Product</th>
+                                    <th className="p-5 text-xs font-medium text-textMuted uppercase tracking-[0.2em]">Price</th>
+                                    <th className="p-5 text-xs font-medium text-textMuted uppercase tracking-[0.2em]">Status</th>
+                                    <th className="p-5 text-xs font-medium text-textMuted uppercase tracking-[0.2em] text-right">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody className="divide-y divide-border-subtle">
                                 {products.length === 0 ? (
                                     <tr>
-                                        <td colSpan="4" className="p-8 text-center text-textMuted text-sm">No products found. Add one to get started.</td>
+                                        <td colSpan="4" className="p-12 text-center text-textMuted text-sm font-light">
+                                            No products found. Add your first product to get started.
+                                        </td>
                                     </tr>
                                 ) : (
                                     products.map(product => (
-                                        <tr key={product._id} className="border-b border-surface/50 hover:bg-background/20 transition-colors">
-                                            <td className="p-4">
-                                                <div className="flex items-center gap-3">
-                                                    <img src={product.imageUrl} alt={product.title} className="w-10 h-10 object-cover rounded-sm bg-[#1A1A1A]"/>
+                                        <tr key={product._id} className="hover:bg-surface/50 transition-colors duration-300 group">
+                                            <td className="p-5">
+                                                <div className="flex items-center gap-4">
+                                                    <img src={product.imageUrl} alt={product.title} className="w-12 h-12 object-cover rounded-xl bg-background border border-border-subtle"/>
                                                     <div>
-                                                        <p className="text-sm font-medium text-textMain">{product.title}</p>
-                                                        <p className="text-xs text-textMuted">{product.category}</p>
+                                                        <p className="text-sm font-heading font-medium text-textMain group-hover:text-primary transition-colors">{product.title}</p>
+                                                        <p className="text-xs text-textMuted mt-1">{product.category}</p>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="p-4 text-sm text-textMain">${product.price.toFixed(2)}</td>
-                                            <td className="p-4">
-                                                <span className={`text-xs px-2 py-1 rounded-sm ${product.stockQuantity > 5 ? 'bg-green-900/30 text-green-500' : product.stockQuantity > 0 ? 'bg-yellow-900/30 text-yellow-500' : 'bg-red-900/30 text-red-500'}`}>
+                                            <td className="p-5 text-sm font-medium text-textMain">
+                                                ${product.price.toFixed(2)}
+                                            </td>
+                                            <td className="p-5">
+                                                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border backdrop-blur-md ${
+                                                    product.stockQuantity > 5 
+                                                        ? 'bg-green-500/10 text-green-400 border-green-500/20' 
+                                                        : product.stockQuantity > 0 
+                                                            ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' 
+                                                            : 'bg-red-500/10 text-red-400 border-red-500/20'
+                                                }`}>
                                                     {product.stockQuantity} in stock
                                                 </span>
                                             </td>
-                                            <td className="p-4 text-right">
+                                            <td className="p-5 text-right">
                                                 <div className="flex justify-end gap-2">
-                                                    <button onClick={() => handleEditClick(product)} className="p-2 hover:bg-background rounded-sm text-textMuted hover:text-primary transition-colors">
+                                                    <button onClick={() => handleEditClick(product)} className="p-2.5 bg-background border border-border-subtle rounded-full text-textMuted hover:text-primary hover:border-primary transition-all duration-300">
                                                         <Edit size={16} />
                                                     </button>
-                                                    <button onClick={() => handleDelete(product._id)} className="p-2 hover:bg-background rounded-sm text-textMuted hover:text-red-500 transition-colors">
+                                                    <button onClick={() => handleDelete(product._id)} className="p-2.5 bg-background border border-border-subtle rounded-full text-textMuted hover:text-red-400 hover:border-red-400 hover:bg-red-950/20 transition-all duration-300">
                                                         <Trash2 size={16} />
                                                     </button>
                                                 </div>

@@ -1,17 +1,20 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 import api from '../api/axios';
 
-export const AuthContext = createContext();
+export const AuthContext = createContext(null); // Explicitly set to null
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Check if user is already logged in when the app loads
     useEffect(() => {
         const storedUser = localStorage.getItem('userInfo');
         if (storedUser) {
-            setUser(JSON.parse(storedUser));
+            try {
+                setUser(JSON.parse(storedUser));
+            } catch (e) {
+                localStorage.removeItem('userInfo');
+            }
         }
         setLoading(false);
     }, []);
@@ -28,9 +31,20 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('userInfo');
     };
 
+    // Return null if loading to prevent child components from 
+    // running hooks with "null" context during the initial boot
     return (
         <AuthContext.Provider value={{ user, login, logout, loading }}>
-            {children}
+            {!loading && children}
         </AuthContext.Provider>
     );
+};
+
+// Custom hook for cleaner and safer usage
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return context;
 };

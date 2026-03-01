@@ -54,7 +54,7 @@ export const createCheckoutSession = async (req, res) => {
             line_items,
             mode: 'payment',
             success_url: `${process.env.CLIENT_URL || 'http://localhost:5173'}/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.CLIENT_URL || 'http://localhost:5173'}/cart`,
+            cancel_url: `${process.env.CLIENT_URL || 'http://localhost:5173'}/cancel`,
             client_reference_id: req.user._id.toString(), // Securely tie order to the logged-in user
             metadata: {
                 // Pass a lightweight map of product IDs and quantities so the webhook knows what to deduct
