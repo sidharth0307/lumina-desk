@@ -1,6 +1,6 @@
 # Lumina Desk - E-Commerce Platform
 
-A premium, full-stack MERN e-commerce application built for the "Build Your Brand" 72-Hour Assignment.
+A premium, full-stack MERN e-commerce application built for the "Build Your Brand" Assignment.
 
 ## Features
 - Secure JWT Authentication & Role-based access (Admin/User).

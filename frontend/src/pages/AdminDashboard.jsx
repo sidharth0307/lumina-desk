@@ -28,7 +28,7 @@ const AdminDashboard = () => {
     const fetchAdminData = async () => {
         try {
             setLoading(true);
-            // Fetch products (we can fetch more for admin view if needed, but reusing the public endpoint is fine for now)
+            // Fetch products 
             const productRes = await api.get('/products?limit=50'); 
             setProducts(productRes.data.products);
 
